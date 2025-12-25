@@ -8,3 +8,17 @@ Architecture diagram (Excalidraw): [docs/trainer.excalidraw](docs/trainer.excali
 * JAVA
 * Postgresql
 * AWS
+
+## AWS deployment flow
+```
+GitHub
+↓
+GitHub Actions (CI/CD)
+↓
+Docker image
+↓
+Amazon ECR (image registry)
+↓
+EC2 (Docker runtime)
+```
+
