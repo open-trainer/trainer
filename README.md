@@ -1,6 +1,11 @@
 # java-trainer
 
-This projects is for setting up your training routine.
+This project is for setting up your training routine.
+
+Entities:
+1. UserProfile - user stat data
+2. TrainingPlan
+3. TrainingPlanVersion
 
 Architecture diagram (Excalidraw): [docs/trainer.excalidraw](docs/trainer.excalidraw)
 
