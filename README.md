@@ -27,3 +27,12 @@ Amazon ECR (image registry)
 EC2 (Docker runtime)
 ```
 
+## Actions
+* Login
+* Training plan api
+* Database api
+* Integrate with GPT
+* Integrate with Garmin
+* Deploy to AWS
+* Make notifications
+* 

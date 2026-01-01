@@ -9,8 +9,6 @@ subprojects {
 
     repositories { mavenCentral() }
 
-    // Use java-library for library modules (see point 3)
-
     extensions.configure(JavaPluginExtension::class.java) {
         toolchain.languageVersion.set(JavaLanguageVersion.of(17))
     }

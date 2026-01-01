@@ -1,3 +1,6 @@
 spring:
   application:
     name: user-api
+
+application:
+  data-source: user

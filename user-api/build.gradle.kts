@@ -14,6 +14,8 @@ repositories {
 dependencies {
     implementation(project(":training-domain"))
     implementation(project(":training-clients"))
+    implementation(project(":user-infra"))
+
     implementation("org.springframework.boot:spring-boot-starter")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("jakarta.persistence:jakarta.persistence-api")

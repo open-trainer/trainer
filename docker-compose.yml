@@ -1,0 +1,46 @@
+version: '3.8'
+
+services:
+  postgres-user:
+    image: postgres:16-alpine
+    container_name: user-db
+    environment:
+      POSTGRES_DB: user_db
+      POSTGRES_USER: user_db_user
+      POSTGRES_PASSWORD: user_db_password
+    ports:
+      - "5432:5432"
+    volumes:
+      - user-db-data:/var/lib/postgresql/data
+    networks:
+      - trainer-network
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U user_db_user -d user_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  user-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: user-api
+    environment:
+      SPRING_PROFILES_ACTIVE: user-datasource
+      SPRING_DATASOURCE_USER_JDBC_URL: jdbc:postgresql://postgres-user:5432/user_db
+      SPRING_DATASOURCE_USER_USERNAME: user_db_user
+      SPRING_DATASOURCE_USER_PASSWORD: user_db_password
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres-user:
+        condition: service_healthy
+    networks:
+      - trainer-network
+
+volumes:
+  user-db-data:
+
+networks:
+  trainer-network:
+    driver: bridge

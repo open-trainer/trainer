@@ -8,3 +8,4 @@ include("training-infra")
 include("training-api")
 
 include("user-api")
+include("user-infra")
