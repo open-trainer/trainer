@@ -1,6 +1,6 @@
 rootProject.name = "trainer"
 
-
+include("garmin-client")
 include("training-core")
 include("training-domain")
 include("training-clients")
