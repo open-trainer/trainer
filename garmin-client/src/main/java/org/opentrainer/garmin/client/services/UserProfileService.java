@@ -41,7 +41,7 @@ public class UserProfileService {
      */
     public Mono<UserProfile.MeasurementSystem> getUnitSystem() {
         return getUserProfile()
-                .map(UserProfile::getMeasurementSystem);
+                       .map(UserProfile::getMeasurementSystem);
     }
 
     /**
@@ -49,7 +49,7 @@ public class UserProfileService {
      */
     public Mono<String> getFullName() {
         return getUserProfileInfo()
-                .map(UserProfile::getFullName);
+                       .map(UserProfile::getFullName);
     }
 
     /**
@@ -57,6 +57,6 @@ public class UserProfileService {
      */
     public Mono<String> getDisplayName() {
         return getUserProfile()
-                .map(UserProfile::getDisplayName);
+                       .map(UserProfile::getDisplayName);
     }
 }

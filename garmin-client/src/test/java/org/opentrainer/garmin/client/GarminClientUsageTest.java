@@ -35,6 +35,15 @@ class GarminClientUsageTest {
         }
     }
 
+    @Test
+    void loginWorkflowExample() {
+        // This is a documentation-only test showing the new login workflow
+        if (garminClient != null) {
+            // garminClient.login(); // This would call the Python script
+            // UserProfile profile = garminClient.getUserProfile().block();
+        }
+    }
+
     /*
     @Test
     void exampleUsage() {

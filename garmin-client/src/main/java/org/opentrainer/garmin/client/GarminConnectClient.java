@@ -3,6 +3,7 @@ package org.opentrainer.garmin.client;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.opentrainer.garmin.auth.PythonAuthService;
 import org.opentrainer.garmin.client.services.*;
 import org.opentrainer.garmin.model.*;
 import reactor.core.publisher.Mono;
@@ -56,6 +57,15 @@ public class GarminConnectClient {
 
     @Getter
     private final TrainingPlanService trainingPlanService;
+
+    private final PythonAuthService pythonAuthService;
+
+    /**
+     * Authenticate with Garmin using configured credentials via Python helper script.
+     */
+    public void login() {
+        pythonAuthService.authenticate();
+    }
 
     // ==================== User Profile Operations ====================
 

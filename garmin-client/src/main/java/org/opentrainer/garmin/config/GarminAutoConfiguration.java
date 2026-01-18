@@ -11,6 +11,7 @@ import io.github.resilience4j.ratelimiter.RateLimiterConfig;
 import io.github.resilience4j.retry.Retry;
 import io.github.resilience4j.retry.RetryConfig;
 import lombok.RequiredArgsConstructor;
+import org.opentrainer.garmin.auth.PythonAuthService;
 import org.opentrainer.garmin.auth.TokenManager;
 import org.opentrainer.garmin.client.GarminConnectClient;
 import org.opentrainer.garmin.client.http.GarminWebClient;
@@ -193,6 +194,15 @@ public class GarminAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
+    public PythonAuthService pythonAuthService(
+            GarminProperties properties,
+            TokenManager tokenManager,
+            ObjectMapper objectMapper) {
+        return new PythonAuthService(properties, tokenManager, objectMapper);
+    }
+
+    @Bean
+    @ConditionalOnMissingBean
     public GarminConnectClient garminConnectClient(
             UserProfileService userProfileService,
             ActivityService activityService,
@@ -200,7 +210,8 @@ public class GarminAutoConfiguration {
             WellnessService wellnessService,
             DeviceService deviceService,
             GearService gearService,
-            TrainingPlanService trainingPlanService) {
+            TrainingPlanService trainingPlanService,
+            PythonAuthService pythonAuthService) {
         return new GarminConnectClient(
                 userProfileService,
                 activityService,
@@ -208,7 +219,8 @@ public class GarminAutoConfiguration {
                 wellnessService,
                 deviceService,
                 gearService,
-                trainingPlanService
+                trainingPlanService,
+                pythonAuthService
         );
     }
 }

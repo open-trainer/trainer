@@ -23,7 +23,8 @@ public class TrainingPlanService {
      */
     public Mono<List<Map<String, Object>>> getWorkouts(int start, int limit) {
         String path = String.format("/workout-service/workouts?start=%d&limit=%d", start, limit);
-        return webClient.get(path, new ParameterizedTypeReference<List<Map<String, Object>>>() {});
+        return webClient.get(path, new ParameterizedTypeReference<>() {
+        });
     }
 
     /**

@@ -2,8 +2,7 @@ ROLE:
 You are a senior Java engineer with production experience in AI and garmin API.
 
 GOAL:
-Implement a java library which can be used to connect to garmin using api. API, host, everything should be configured using best practice
-
+in garmin client library, implement 
 # Garmin Connect API Analysis
 
 This document lists all API endpoints extracted from the python-garminconnect project.

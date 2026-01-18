@@ -53,6 +53,26 @@ public class GarminProperties {
     @Data
     public static class OAuth {
         /**
+         * User email for authentication
+         */
+        private String email;
+
+        /**
+         * User password for authentication
+         */
+        private String password;
+
+        /**
+         * Path to the Python executable
+         */
+        private String pythonPath = "python3";
+
+        /**
+         * Path to the java_auth_helper.py script
+         */
+        private String authHelperPath = "java_auth_helper.py";
+
+        /**
          * OAuth consumer key
          */
         private String consumerKey;
