@@ -12,9 +12,13 @@ repositories {
 }
 
 dependencies {
+    implementation(project(":training-domain"))
+    implementation(project(":training-core"))
+    
     // Spring Boot
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-jdbc")
+    implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-configuration-processor")
 
     // Database

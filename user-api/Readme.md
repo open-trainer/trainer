@@ -1,3 +1,48 @@
+# User API Service
+
+## API Endpoints
+
+### Registration
+- **POST** `/api/v1/registration`
+  - Registers a new user or adds a registration option to an existing user.
+  - Supports `LOGIN_PASSWORD`, `TELEGRAM`, `GMAIL`, `PHONE`.
+  - Request Body:
+    ```json
+    {
+      "email": "user@example.com",
+      "firstName": "John",
+      "lastName": "Doe",
+      "registrationType": "LOGIN_PASSWORD",
+      "identifier": "user@example.com",
+      "secret": "password123"
+    }
+    ```
+
+### Authentication
+- **POST** `/api/v1/auth/login`
+  - Authenticates a user and returns a token.
+  - Request Body:
+    ```json
+    {
+      "registrationType": "LOGIN_PASSWORD",
+      "identifier": "user@example.com",
+      "secret": "password123"
+    }
+    ```
+  - Response Body:
+    ```json
+    {
+      "token": "uuid-token"
+    }
+    ```
+
+## Architecture
+This service follows **Hexagonal Architecture**:
+- `training-domain`: Domain entities and repository ports.
+- `training-core`: Business logic and use cases.
+- `user-infra`: Infrastructure implementations (Persistence, Security adapters).
+- `user-api`: REST controllers and configuration.
+
 # user-api
 
 User API is responsible for user management.
