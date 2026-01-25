@@ -1,6 +1,5 @@
 package org.opentrainer.garmin.client.http;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.ratelimiter.RateLimiter;
 import io.github.resilience4j.reactor.circuitbreaker.operator.CircuitBreakerOperator;
@@ -31,7 +30,6 @@ public class GarminWebClient {
     private final CircuitBreaker circuitBreaker;
     private final RateLimiter rateLimiter;
     private final Retry retry;
-    private final ObjectMapper objectMapper;
     private final GarminProperties properties;
 
     public GarminWebClient(
@@ -40,14 +38,12 @@ public class GarminWebClient {
             CircuitBreaker circuitBreaker,
             RateLimiter rateLimiter,
             Retry retry,
-            ObjectMapper objectMapper,
             GarminProperties properties) {
         this.webClient = webClient;
         this.tokenManager = tokenManager;
         this.circuitBreaker = circuitBreaker;
         this.rateLimiter = rateLimiter;
         this.retry = retry;
-        this.objectMapper = objectMapper;
         this.properties = properties;
     }
 

@@ -1,11 +1,11 @@
 package org.opentrainer.garmin.auth;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.opentrainer.garmin.config.GarminProperties;
 import org.opentrainer.garmin.exception.GarminAuthenticationException;
+import tools.jackson.databind.json.JsonMapper;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
@@ -21,7 +21,7 @@ public class PythonAuthService {
 
     private final GarminProperties properties;
     private final TokenManager tokenManager;
-    private final ObjectMapper objectMapper;
+    private final JsonMapper objectMapper;
 
     /**
      * Authenticate using the Python helper script and store tokens.

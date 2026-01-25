@@ -1,20 +1,16 @@
 package org.opentrainer.garmin.client;
 
 import org.junit.jupiter.api.Test;
-import org.opentrainer.garmin.model.Activity;
-import org.opentrainer.garmin.model.UserProfile;
+import org.opentrainer.garmin.config.GarminAutoConfiguration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
-import reactor.test.StepVerifier;
-
-import java.time.LocalDate;
 
 /**
  * Example tests showing how to use the GarminConnectClient.
  * These are not intended to run against a real API without proper configuration.
  */
-@SpringBootTest
+@SpringBootTest(classes = GarminAutoConfiguration.class)
 @ActiveProfiles("test")
 class GarminClientUsageTest {
 

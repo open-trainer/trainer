@@ -1,0 +1,10 @@
+version: "1.0"
+projectJDK: "1.8"
+profile:
+  name: qodana.recommended
+include:
+  - name: CheckDependencyLicenses
+exclude:
+  - name: All
+    paths:
+      - sarif/src/test/resources/
