@@ -19,5 +19,5 @@ jobs:
           docker run --rm \
             -v "${{ github.workspace }}:/project" \
             -w /project \
-            gradle:8.5-jdk17 \
+            gradle:9.0.0-jdk17 \
             gradle build --no-daemon
