@@ -1,11 +1,9 @@
 package org.opentrainer.garmin.auth;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import lombok.extern.slf4j.Slf4j;
 import org.opentrainer.garmin.config.GarminProperties;
+import tools.jackson.databind.json.JsonMapper;
 
-import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -21,15 +19,14 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 public class TokenManager {
 
     private final GarminProperties.OAuth oauthConfig;
-    private final ObjectMapper objectMapper;
     private final ReadWriteLock lock = new ReentrantReadWriteLock();
-    
+    private final JsonMapper mapp;
     private volatile OAuth1Token oauth1Token;
     private volatile OAuth2Token oauth2Token;
 
-    public TokenManager(GarminProperties.OAuth oauthConfig) {
+    public TokenManager(GarminProperties.OAuth oauthConfig, JsonMapper mapp) {
         this.oauthConfig = oauthConfig;
-        this.objectMapper = new ObjectMapper().registerModule(new JavaTimeModule());
+        this.mapp = mapp;
         loadTokensFromDisk();
     }
 
@@ -123,16 +120,12 @@ public class TokenManager {
      * Load tokens from disk
      */
     private void loadTokensFromDisk() {
-        try {
-            Path tokenPath = getTokenPath();
-            if (Files.exists(tokenPath)) {
-                TokenStore store = objectMapper.readValue(tokenPath.toFile(), TokenStore.class);
-                this.oauth1Token = store.getOauth1Token();
-                this.oauth2Token = store.getOauth2Token();
-                log.info("Loaded tokens from {}", tokenPath);
-            }
-        } catch (IOException e) {
-            log.warn("Failed to load tokens from disk: {}", e.getMessage());
+        Path tokenPath = getTokenPath();
+        if (Files.exists(tokenPath)) {
+            TokenStore store = mapp.readValue(tokenPath.toFile(), TokenStore.class);
+            this.oauth1Token = store.getOauth1Token();
+            this.oauth2Token = store.getOauth2Token();
+            log.info("Loaded tokens from {}", tokenPath);
         }
     }
 
@@ -149,7 +142,7 @@ public class TokenManager {
                     .oauth2Token(oauth2Token)
                     .build();
             
-            objectMapper.writeValue(tokenPath.toFile(), store);
+            mapp.writeValue(tokenPath.toFile(), store);
             log.debug("Saved tokens to {}", tokenPath);
         } catch (IOException e) {
             log.error("Failed to save tokens to disk: {}", e.getMessage());

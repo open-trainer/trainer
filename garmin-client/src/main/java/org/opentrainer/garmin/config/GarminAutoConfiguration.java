@@ -1,9 +1,8 @@
 package org.opentrainer.garmin.config;
 
-import com.fasterxml.jackson.databind.DeserializationFeature;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import io.github.resilience4j.core.IntervalFunction;
+import tools.jackson.databind.DeserializationFeature;
+import tools.jackson.databind.json.JsonMapper;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.ratelimiter.RateLimiter;
@@ -20,8 +19,8 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.codec.json.Jackson2JsonDecoder;
-import org.springframework.http.codec.json.Jackson2JsonEncoder;
+import org.springframework.http.codec.json.JacksonJsonDecoder;
+import org.springframework.http.codec.json.JacksonJsonEncoder;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
 
@@ -37,18 +36,17 @@ public class GarminAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public ObjectMapper garminObjectMapper() {
-        return new ObjectMapper()
-                .registerModule(new JavaTimeModule())
-                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
+    public JsonMapper garminJsonMapper() {
+        return JsonMapper.builder()
                 .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-                .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT);
+                .enable(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT)
+                .build();
     }
 
     @Bean
     @ConditionalOnMissingBean
-    public TokenManager tokenManager() {
-        return new TokenManager(properties.getOauth());
+    public TokenManager tokenManager(JsonMapper jsonMapper) {
+        return new TokenManager(properties.getOauth(), jsonMapper);
     }
 
     @Bean
@@ -96,17 +94,19 @@ public class GarminAutoConfiguration {
         }
 
         var config = properties.getResilience().getRetry();
+
         RetryConfig.Builder<Object> retryConfigBuilder = RetryConfig.custom()
-                .maxAttempts(config.getMaxAttempts())
-                .waitDuration(config.getWaitDuration());
+                .maxAttempts(config.getMaxAttempts());
 
         if (config.isExponentialBackoff()) {
             retryConfigBuilder.intervalFunction(
-                    io.github.resilience4j.core.IntervalFunction.ofExponentialBackoff(
-                            config.getWaitDuration(),
-                            config.getExponentialBackoffMultiplier()
-                    )
+                IntervalFunction.ofExponentialBackoff(
+                        config.getWaitDuration(),
+                        config.getExponentialBackoffMultiplier()
+                )
             );
+        } else {
+            retryConfigBuilder.waitDuration(config.getWaitDuration());
         }
 
         return Retry.of("garmin", retryConfigBuilder.build());
@@ -114,11 +114,11 @@ public class GarminAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public WebClient garminWebClient(ObjectMapper objectMapper, TokenManager tokenManager) {
+    public WebClient garminWebClient(JsonMapper jsonMapper) {
         ExchangeStrategies strategies = ExchangeStrategies.builder()
                 .codecs(configurer -> {
-                    configurer.defaultCodecs().jackson2JsonEncoder(new Jackson2JsonEncoder(objectMapper));
-                    configurer.defaultCodecs().jackson2JsonDecoder(new Jackson2JsonDecoder(objectMapper));
+                    configurer.defaultCodecs().jacksonJsonEncoder(new JacksonJsonEncoder(jsonMapper));
+                    configurer.defaultCodecs().jacksonJsonDecoder(new JacksonJsonDecoder(jsonMapper));
                     configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024); // 16MB
                 })
                 .build();
@@ -137,15 +137,13 @@ public class GarminAutoConfiguration {
             TokenManager tokenManager,
             CircuitBreaker circuitBreaker,
             RateLimiter rateLimiter,
-            Retry retry,
-            ObjectMapper objectMapper) {
+            Retry retry) {
         return new GarminWebClient(
                 garminWebClient,
                 tokenManager,
                 circuitBreaker,
                 rateLimiter,
                 retry,
-                objectMapper,
                 properties
         );
     }
@@ -197,8 +195,8 @@ public class GarminAutoConfiguration {
     public PythonAuthService pythonAuthService(
             GarminProperties properties,
             TokenManager tokenManager,
-            ObjectMapper objectMapper) {
-        return new PythonAuthService(properties, tokenManager, objectMapper);
+            JsonMapper jsonMapper) {
+        return new PythonAuthService(properties, tokenManager, jsonMapper);
     }
 
     @Bean
