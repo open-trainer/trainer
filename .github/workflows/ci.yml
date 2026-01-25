@@ -21,3 +21,5 @@ jobs:
             -w /project \
             gradle:9.0.0-jdk17 \
             gradle build --no-daemon
+      - name: Verify AWS identity
+        run: aws sts get-caller-identity
