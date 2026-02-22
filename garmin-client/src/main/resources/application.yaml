@@ -1,0 +1,4 @@
+garmin:
+  oauth:
+    email: ${GARMIN_EMAIL}
+    password: ${GARMIN_PASSWORD}

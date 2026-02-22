@@ -11,7 +11,7 @@ import java.time.Duration;
 
 /**
  * Configuration properties for Garmin Connect API client.
- * Allows external configuration through application.yml or application.properties.
+ * Allows external configuration through application.yml or application.yaml.
  */
 @Data
 @Validated

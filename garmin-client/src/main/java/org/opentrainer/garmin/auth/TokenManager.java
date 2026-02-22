@@ -2,7 +2,7 @@ package org.opentrainer.garmin.auth;
 
 import lombok.extern.slf4j.Slf4j;
 import org.opentrainer.garmin.config.GarminProperties;
-import tools.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -24,7 +24,7 @@ public class TokenManager {
     private volatile OAuth1Token oauth1Token;
     private volatile OAuth2Token oauth2Token;
 
-    public TokenManager(GarminProperties.OAuth oauthConfig, JsonMapper mapp) {
+    public TokenManager(GarminProperties.OAuth oauthConfig, JsonMapper mapp) throws IOException {
         this.oauthConfig = oauthConfig;
         this.mapp = mapp;
         loadTokensFromDisk();
@@ -119,7 +119,7 @@ public class TokenManager {
     /**
      * Load tokens from disk
      */
-    private void loadTokensFromDisk() {
+    private void loadTokensFromDisk() throws IOException {
         Path tokenPath = getTokenPath();
         if (Files.exists(tokenPath)) {
             TokenStore store = mapp.readValue(tokenPath.toFile(), TokenStore.class);

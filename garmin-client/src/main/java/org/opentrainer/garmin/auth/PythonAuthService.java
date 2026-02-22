@@ -5,7 +5,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.opentrainer.garmin.config.GarminProperties;
 import org.opentrainer.garmin.exception.GarminAuthenticationException;
-import tools.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

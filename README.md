@@ -36,3 +36,7 @@ EC2 (Docker runtime)
 * Deploy to AWS
 * Make notifications
 * 
+
+
+Steps
+1. Retri

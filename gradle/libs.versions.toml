@@ -1,0 +1,67 @@
+[versions]
+spring-boot = "3.3.5"
+spring-dependency-management = "1.1.6"
+jackson = "2.17.2"
+lombok = "1.18.30"
+junit = "5.10.0"
+resilience4j = "2.2.0"
+postgresql = "42.7.3"
+flyway = "10.10.0"
+spring-security = "6.3.3"
+spring-framework = "6.1.13"
+mockwebserver = "4.12.0"
+
+[libraries]
+# Spring Boot Starters
+spring-boot-starter = { module = "org.springframework.boot:spring-boot-starter" }
+spring-boot-starter-webflux = { module = "org.springframework.boot:spring-boot-starter-webflux" }
+spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa" }
+spring-boot-starter-jdbc = { module = "org.springframework.boot:spring-boot-starter-jdbc" }
+spring-boot-starter-validation = { module = "org.springframework.boot:spring-boot-starter-validation" }
+spring-boot-starter-test = { module = "org.springframework.boot:spring-boot-starter-test" }
+spring-boot-configuration-processor = { module = "org.springframework.boot:spring-boot-configuration-processor" }
+
+# Jackson
+jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jackson" }
+jackson-core = { module = "com.fasterxml.jackson.core:jackson-core", version.ref = "jackson" }
+jackson-annotations = { module = "com.fasterxml.jackson.core:jackson-annotations", version.ref = "jackson" }
+
+# Resilience4j
+resilience4j-spring-boot3 = { module = "io.github.resilience4j:resilience4j-spring-boot3", version.ref = "resilience4j" }
+resilience4j-reactor = { module = "io.github.resilience4j:resilience4j-reactor", version.ref = "resilience4j" }
+resilience4j-circuitbreaker = { module = "io.github.resilience4j:resilience4j-circuitbreaker", version.ref = "resilience4j" }
+resilience4j-ratelimiter = { module = "io.github.resilience4j:resilience4j-ratelimiter", version.ref = "resilience4j" }
+resilience4j-retry = { module = "io.github.resilience4j:resilience4j-retry", version.ref = "resilience4j" }
+
+# Spring Security
+spring-security-oauth2-client = { module = "org.springframework.security:spring-security-oauth2-client" }
+spring-security-crypto = { module = "org.springframework.security:spring-security-crypto", version.ref = "spring-security" }
+
+# Spring Framework
+spring-context = { module = "org.springframework:spring-context", version.ref = "spring-framework" }
+
+# Database
+postgresql = { module = "org.postgresql:postgresql", version.ref = "postgresql" }
+flyway-core = { module = "org.flywaydb:flyway-core", version.ref = "flyway" }
+flyway-database-postgresql = { module = "org.flywaydb:flyway-database-postgresql", version.ref = "flyway" }
+
+# Lombok
+lombok = { module = "org.projectlombok:lombok", version.ref = "lombok" }
+
+# Testing
+junit-bom = { module = "org.junit:junit-bom", version.ref = "junit" }
+junit-jupiter = { module = "org.junit.jupiter:junit-jupiter" }
+junit-platform-launcher = { module = "org.junit.platform:junit-platform-launcher" }
+reactor-test = { module = "io.projectreactor:reactor-test" }
+mockwebserver = { module = "com.squareup.okhttp3:mockwebserver", version.ref = "mockwebserver" }
+
+[bundles]
+spring-boot-web = ["spring-boot-starter", "spring-boot-starter-webflux"]
+jackson = ["jackson-databind", "jackson-core", "jackson-annotations"]
+resilience4j = ["resilience4j-spring-boot3", "resilience4j-reactor", "resilience4j-circuitbreaker", "resilience4j-ratelimiter", "resilience4j-retry"]
+flyway = ["flyway-core", "flyway-database-postgresql"]
+testing = ["junit-jupiter", "reactor-test"]
+
+[plugins]
+spring-boot = { id = "org.springframework.boot", version.ref = "spring-boot" }
+spring-dependency-management = { id = "io.spring.dependency-management", version.ref = "spring-dependency-management" }

@@ -1,8 +1,8 @@
 package org.opentrainer.garmin.config;
 
 import io.github.resilience4j.core.IntervalFunction;
-import tools.jackson.databind.DeserializationFeature;
-import tools.jackson.databind.json.JsonMapper;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.json.JsonMapper;
 import io.github.resilience4j.circuitbreaker.CircuitBreaker;
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.ratelimiter.RateLimiter;
@@ -19,10 +19,10 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.http.codec.json.JacksonJsonDecoder;
-import org.springframework.http.codec.json.JacksonJsonEncoder;
 import org.springframework.web.reactive.function.client.ExchangeStrategies;
 import org.springframework.web.reactive.function.client.WebClient;
+
+import java.io.IOException;
 
 /**
  * Auto-configuration for Garmin Connect client.
@@ -45,7 +45,7 @@ public class GarminAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public TokenManager tokenManager(JsonMapper jsonMapper) {
+    public TokenManager tokenManager(JsonMapper jsonMapper) throws IOException {
         return new TokenManager(properties.getOauth(), jsonMapper);
     }
 
@@ -114,11 +114,9 @@ public class GarminAutoConfiguration {
 
     @Bean
     @ConditionalOnMissingBean
-    public WebClient garminWebClient(JsonMapper jsonMapper) {
+    public WebClient garminWebClient() {
         ExchangeStrategies strategies = ExchangeStrategies.builder()
                 .codecs(configurer -> {
-                    configurer.defaultCodecs().jacksonJsonEncoder(new JacksonJsonEncoder(jsonMapper));
-                    configurer.defaultCodecs().jacksonJsonDecoder(new JacksonJsonDecoder(jsonMapper));
                     configurer.defaultCodecs().maxInMemorySize(16 * 1024 * 1024); // 16MB
                 })
                 .build();
