@@ -2,3 +2,5 @@ garmin:
   oauth:
     email: ${GARMIN_EMAIL}
     password: ${GARMIN_PASSWORD}
+    python-path: ${PYTHON_PATH:/Users/kamilamva/Documents/trainer/.venv/bin/python3}
+    auth-helper-path: ${AUTH_HELPER_PATH:garmin-client/src/main/resources/java_auth_helper.py}

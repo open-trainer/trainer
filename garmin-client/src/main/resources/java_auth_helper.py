@@ -21,6 +21,7 @@ import os
 import sys
 from getpass import getpass
 from pathlib import Path
+from typing import Optional
 
 from garth.exc import GarthException, GarthHTTPError
 
@@ -44,7 +45,7 @@ def get_credentials():
     return email, password
 
 
-def login_and_save_tokens(tokenstore_path: Path) -> Garmin | None:
+def login_and_save_tokens(tokenstore_path: Path) -> Optional[Garmin]:
     """Login with credentials and save tokens."""
     print("\n📝 Please enter your Garmin Connect credentials:")
 

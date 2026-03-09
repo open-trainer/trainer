@@ -3,7 +3,7 @@ package com.opentrainer.api.controller;
 import lombok.AccessLevel;
 import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
-import org.opentrainer.garmin.auth.PythonAuthService;
+import org.opentrainer.garmin.GarminConnectClient;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,10 +13,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/garmin/login")
 public class GarminLoginController {
-    PythonAuthService authService;
-
     @PostMapping
     public void login() {
-        authService.authenticate();
+        // TODO REMOVE
+        var client = GarminConnectClient.fromLoginPassword(
+                "test@mail.com",
+                "testpassword"
+        );
+        var activities = client.getActivities(10, 0);
+        activities.forEach(System.out::println);
+
     }
 }

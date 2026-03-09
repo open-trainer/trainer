@@ -16,6 +16,7 @@ java {
 
 repositories {
     mavenCentral()
+    maven("https://jitpack.io")
 }
 
 dependencies {
@@ -30,6 +31,12 @@ dependencies {
     implementation(libs.spring.security.oauth2.client)
 
     implementation(libs.bundles.jackson)
+
+    // Gson
+    implementation(libs.gson)
+
+    // OkHttp
+    implementation(libs.okhttp)
 
     // Lombok for reducing boilerplate
     compileOnly(libs.lombok)
